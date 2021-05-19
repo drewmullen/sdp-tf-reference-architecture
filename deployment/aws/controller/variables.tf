@@ -1,4 +1,3 @@
-
 variable "aws_region" {}
 variable "appgate_ami" {
   type        = string
@@ -59,11 +58,24 @@ variable "internet_gateway_id" {}
 
 variable "licensing_type" {
   type        = string
-  description = "Valid Values: byol or licensed. Whether or not to use a bring your own license or prelicensed AMI."
+  description = "Valid Values: byol, paid, metered. Whether or not to use a bring your own license or prelicensed AMI."
   default     = "byol"
   validation {
-    condition     = lower(var.licensing_type) == "byol" || lower(var.licensing_type) == "licensed"
-    error_message = "ERROR Valid value options: byol, licensed."
+    condition     = can(regex("byol|paid|metered", lower(var.licensing_type)))
+    error_message = "ERROR Valid value options: byol, paid, metered."
+  }
+}
+
+variable "product_codes" {
+  # Product Codes
+  # BYOL      2t5itl5x43ar3tljs7s2mu3rw
+  # PAID      cbse92jrh5o5yi82s7eub483b
+  # METERED   6prv7in80dxul9esf60znqimb
+  type = map(any)
+  default = { 
+    byol = "2t5itl5x43ar3tljs7s2mu3rw",
+    paid = "cbse92jrh5o5yi82s7eub483b",
+    metered = "6prv7in80dxul9esf60znqimb"
   }
 }
 
