@@ -32,7 +32,7 @@ data "appgatesdp_site" "default_site" {
 
 resource "appgatesdp_administrative_role" "test_administrative_role" {
   name = "tf-autoscale-gateway-role"
-  tags = local.appgate_tags
+  tags = concat(local.appgate_tags, "template")
   privileges {
     type   = "View"
     target = "Appliance"
@@ -119,13 +119,13 @@ var result = false;
 if(claims.user.ag && claims.user.ag.identityProviderId === "${data.appgatesdp_identity_provider.local_identity_provider.id}"){
      result = true;
 } else {
-     return false; 
+     return false;
 }
 /*claims.user.username*/
-if(claims.user.username === "${appgatesdp_local_user.gateway_api_user.name}") { 
-    result = true; 
-} else { 
-    return false; 
+if(claims.user.username === "${appgatesdp_local_user.gateway_api_user.name}") {
+    result = true;
+} else {
+    return false;
 }
 return result;
 EOF
